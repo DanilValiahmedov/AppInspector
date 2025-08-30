@@ -4,5 +4,5 @@ import com.drweb.appinspector.domain.model.AppInfo
 
 data class AppListState(
     val isLoading: Boolean = true,
-    val apps: List<AppInfo> = emptyList(),
+    val installedApps: List<AppInfo> = emptyList(),
 )

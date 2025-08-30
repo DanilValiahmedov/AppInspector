@@ -13,13 +13,13 @@ class AppDetailsViewModel(
     private val getAppDetailsUseCase: GetAppDetailsUseCase,
 ) : ViewModel() {
 
-    private val _details = MutableStateFlow(AppDetailsState())
-    val details: StateFlow<AppDetailsState> = _details
+    private val _detailsState = MutableStateFlow(AppDetailsState())
+    val detailsState: StateFlow<AppDetailsState> = _detailsState
 
     fun getAppDetails(packageName: String) {
         viewModelScope.launch {
             val appDetails = getAppDetailsUseCase(packageName)
-            _details.update {
+            _detailsState.update {
                 it.copy(
                     isLoading = false,
                     details = appDetails,

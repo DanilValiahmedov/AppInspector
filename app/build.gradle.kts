@@ -41,6 +41,8 @@ android {
 
 dependencies {
 
+    implementation(libs.accompanist.drawablepainter)
+
     implementation(libs.koin.androidx.navigation)
     implementation(libs.koin.androidx.compose)
 

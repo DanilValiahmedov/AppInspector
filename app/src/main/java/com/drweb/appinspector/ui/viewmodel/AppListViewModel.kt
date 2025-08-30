@@ -13,17 +13,17 @@ class AppListViewModel(
     private val getInstalledAppsUseCase: GetInstalledAppsUseCase,
 ) : ViewModel() {
 
-    private val _apps = MutableStateFlow(AppListState())
-    val apps: StateFlow<AppListState> = _apps
+    private val _appsState = MutableStateFlow(AppListState())
+    val appsState: StateFlow<AppListState> = _appsState
 
     init {
         viewModelScope.launch {
             val installedApps = getInstalledAppsUseCase()
 
-            _apps.update {
+            _appsState.update {
                 it.copy(
                     isLoading = false,
-                    apps = installedApps,
+                    installedApps = installedApps,
                 )
             }
         }
