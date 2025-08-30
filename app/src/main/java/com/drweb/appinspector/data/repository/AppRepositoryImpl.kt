@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import com.drweb.appinspector.domain.model.AppDetails
 import com.drweb.appinspector.domain.model.AppInfo
 import com.drweb.appinspector.domain.repository.AppRepository
+import com.drweb.appinspector.utils.CheckSum
 import java.io.File
 
 class AppRepositoryImpl(
@@ -25,12 +26,13 @@ class AppRepositoryImpl(
     override suspend fun getAppDetails(packageName: String): AppDetails {
         val info = packageManager.getPackageInfo(packageName, 0)
         val appInfo = packageManager.getApplicationInfo(packageName, 0)
+        val apkFile = File(appInfo.sourceDir)
 
         return AppDetails(
             appName = packageManager.getApplicationLabel(appInfo).toString(),
             packageName = packageName,
             versionName = info.versionName ?: "",
-            checksum = "",
+            checksum = CheckSum.calculateChecksum(apkFile),
         )
     }
 }
