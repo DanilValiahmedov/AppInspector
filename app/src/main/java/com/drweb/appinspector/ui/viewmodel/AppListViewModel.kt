@@ -17,15 +17,45 @@ class AppListViewModel(
     val appsState: StateFlow<AppListState> = _appsState
 
     init {
-        viewModelScope.launch {
-            val installedApps = getInstalledAppsUseCase()
+        loadingInstalledApps()
+    }
 
+    fun loadingInstalledApps() {
+        viewModelScope.launch {
             _appsState.update {
                 it.copy(
                     isLoading = false,
-                    installedApps = installedApps,
+                    installedApps = emptyList(),
+                    errorMessage = null,
                 )
             }
+
+            val result = getInstalledAppsUseCase()
+
+            result
+                .onSuccess { apps ->
+                    _appsState.update {
+                        it.copy(
+                            isLoading = false,
+                            installedApps = apps,
+                            errorMessage = null,
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    val message = when(error) {
+                        is SecurityException -> "Нет прав на доступ к списку приложений"
+                        else -> error.localizedMessage ?: "Неизвестная ошибка"
+                    }
+
+                    _appsState.update {
+                        it.copy(
+                            isLoading = false,
+                            installedApps = emptyList(),
+                            errorMessage = message,
+                        )
+                    }
+                }
         }
     }
 

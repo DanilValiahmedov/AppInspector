@@ -4,5 +4,6 @@ import com.drweb.appinspector.domain.model.AppDetails
 import com.drweb.appinspector.domain.repository.AppRepository
 
 class GetAppDetailsUseCase(private val repository: AppRepository) {
-    suspend operator fun invoke(packageName: String): AppDetails = repository.getAppDetails(packageName)
+    suspend operator fun invoke(packageName: String): Result<AppDetails> =
+        repository.getAppDetails(packageName)
 }

@@ -4,6 +4,6 @@ import com.drweb.appinspector.domain.model.AppDetails
 import com.drweb.appinspector.domain.model.AppInfo
 
 interface AppRepository {
-    suspend fun getInstalledApps(): List<AppInfo>
-    suspend fun getAppDetails(packageName: String): AppDetails
+    suspend fun getInstalledApps(): Result<List<AppInfo>>
+    suspend fun getAppDetails(packageName: String): Result<AppDetails>
 }
